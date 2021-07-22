@@ -6,10 +6,12 @@ import songService from "../Services/SongsService.js";
 function _drawResults() {
   let template = ''
   ProxyState.songs.forEach(s => {
-    template += `<div class="d-flex justify-content-between">
-    <p onclick="app.songsController.setActiveSong('${s._id}')">${s.title}</p>
-    <button type="button" class="btn btn-primary" onclick="app.songsController.setActiveSong('${s._id}')">Preview</button>
+    if (s.title && s.kind == "song") {
+      template += `<div class="d-flex justify-content-between">
+    <p onclick="app.songsController.setActiveSong('${s.id}')">${s.title}</p>
+    <button type="button" class="btn btn-primary" onclick="app.songsController.setActiveSong('${s.id}')">Preview</button>
 </div>`
+    }
   })
   document.getElementById('results').innerHTML = template
 }
@@ -24,6 +26,7 @@ function _drawPlaylist() {
   if (!template) {
     document.getElementById('playlist').innerHTML = `<p>Search for songs to add to your playlist!</p>`
   }
+
 }
 
 function _drawActiveSong() {
@@ -37,9 +40,16 @@ export default class SongsController {
     ProxyState.on('songs', _drawResults)
     ProxyState.on('playlist', _drawPlaylist)
     ProxyState.on('activeSong', _drawActiveSong)
-    _drawPlaylist()
-  }
+    this.getMyPlaylist()
 
+  }
+  async getMyPlaylist() {
+    try {
+      await songService.getMyPlaylist()
+    } catch (error) {
+      console.error(error)
+    }
+  }
   /**Takes in the form submission event and sends the query to the service */
   search(e) {
     //NOTE You dont need to change this method
@@ -61,11 +71,11 @@ export default class SongsController {
 
   /**
    * Takes in a song id and sends it to the service in order to add it to the users playlist
-   * @param {string} id
+   * 
    */
-  async addSong(id) {
+  async addSong() {
     try {
-      await songService.addSong(id)
+      await songService.addSong()
     } catch (error) {
       console.error(error)
     }
@@ -75,6 +85,12 @@ export default class SongsController {
    * Takes in a song id to be removed from the users playlist and sends it to the server
    * @param {string} id
    */
-  removeSong(id) { }
+  async removeSong(id) {
+    try {
+      await songService.removeSong(id)
+    } catch (error) {
+      console.error(error)
+    }
+  }
 }
 
