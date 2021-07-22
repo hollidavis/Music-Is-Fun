@@ -7,9 +7,11 @@ function _drawResults() {
   let template = ''
   ProxyState.songs.forEach(s => {
     if (s.title && s.kind == "song") {
-      template += `<div class="d-flex justify-content-between">
-    <p onclick="app.songsController.setActiveSong('${s.id}')">${s.title}</p>
-    <button type="button" class="btn btn-primary" onclick="app.songsController.setActiveSong('${s.id}')">Preview</button>
+      template += `<div class="d-flex justify-content-between my-2">
+    <p class="m-0" onclick="app.songsController.setActiveSong('${s.id}')"><small>${s.title}</small></p>
+    <div>
+    <button type="button" class="btn btn-primary btn-sm" onclick="app.songsController.setActiveSong('${s.id}')">Preview</button>
+    </div>
 </div>`
     }
   })

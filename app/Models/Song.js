@@ -7,7 +7,7 @@ export default class Song {
     this.price = data.trackPrice || data.price;
     this.preview = data.previewUrl || data.preview;
     this.id = data.trackId || data._id;
-    this.kind = data.kind.toLowerCase()
+    this.kind = data.kind
   }
 
   get Template() {
@@ -15,8 +15,8 @@ export default class Song {
 <div class="card w-50 shadow p-0 side-bar-scroll mt-2">
     <img class="img-fix card-img-top" src="${this.albumArt}" alt="${this.title}">
     <div class="card-body text-center p-1">
-        <h5>${this.artist} - ${this.title}</h5>
-        <p>${this.album} | Buy now: ${this.price}</p>
+        <h5>${this.title} - ${this.artist}</h5>
+        <p>${this.album} | Buy now: $${this.price}</p>
         <audio controls>
           <source src="${this.preview}">
         </audio>
@@ -30,8 +30,10 @@ export default class Song {
     return `
     <div class="">
     <div class="d-flex justify-content-between">
-    <p><b>${this.artist} - ${this.title}</b></p>
-    <button type="button" class="btn btn-danger" onclick="app.songsController.removeSong('${this.id}')">X</button>
+    <p><b>${this.title} - ${this.artist}</b></p>
+    <div>
+    <button type="button" class="btn btn-danger btn-sm" onclick="app.songsController.removeSong('${this.id}')">X</button>
+    </div>
     </div>
     <p>${this.album}</p>
     </div>
