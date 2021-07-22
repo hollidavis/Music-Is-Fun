@@ -12,12 +12,23 @@ function _drawResults() {
 }
 
 /**Draws the Users saved songs to the page */
-function _drawPlaylist() { }
+function _drawPlaylist() {
+  let template = ''
+  ProxyState.playlist.forEach(p => {
+    template += `<p>${p.title}</p>`
+    document.getElementById('playlist').innerHTML = template
+  })
+  if (!template) {
+    document.getElementById('playlist').innerHTML = `<p>Search for songs to add to your playlist!</p>`
+  }
+}
 
 //Public
 export default class SongsController {
   constructor() {
     ProxyState.on('songs', _drawResults)
+    ProxyState.on('playlist', _drawPlaylist)
+    _drawPlaylist()
   }
 
   /**Takes in the form submission event and sends the query to the service */
@@ -30,6 +41,14 @@ export default class SongsController {
       console.error(error);
     }
   }
+
+  // async getMySongs() {
+  //   try {
+  //     await songService.getMySongs()
+  //   } catch (error) {
+  //     console.error(error)
+  //   }
+  // }
 
   /**
    * Takes in a song id and sends it to the service in order to add it to the users playlist
