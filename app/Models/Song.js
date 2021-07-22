@@ -11,13 +11,23 @@ export default class Song {
 
   get Template() {
     return `
-
+<div class="card shadow">
+    <img class="card-img-top" src="" alt="">
+    <div class="card-body text-center">
+        <h3>${this.artist} - ${this.title}</h3>
+        <p>${this.album} | Buy now: ${this.price}</p>
+        <audio controls>
+          <source src="${this.preview}">
+        </audio>
+    </div>
+    <div class = "text-right">
+    <button type="button" class="btn btn-primary" onclick="app.songsController.addSong('${this._id}')">Add to Playlist</button>
+    </div>
+</div>
         `;
   }
 
   get playlistTemplate() {
-    return `
-
-        `;
+    return `<p>${this.title}</p>`
   }
 }

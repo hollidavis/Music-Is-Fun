@@ -6,7 +6,10 @@ import songService from "../Services/SongsService.js";
 function _drawResults() {
   let template = ''
   ProxyState.songs.forEach(s => {
-    template += `<p>${s.title}</p>`
+    template += `<div class="d-flex justify-content-between">
+    <p onclick="app.songsController.setActiveSong('${s._id}')">${s.title}</p>
+    <button type="button" class="btn btn-primary" onclick="app.songsController.setActiveSong('${s._id}')">Preview</button>
+</div>`
   })
   document.getElementById('results').innerHTML = template
 }
@@ -15,19 +18,25 @@ function _drawResults() {
 function _drawPlaylist() {
   let template = ''
   ProxyState.playlist.forEach(p => {
-    template += `<p>${p.title}</p>`
-    document.getElementById('playlist').innerHTML = template
+    template += p.playlistTemplate
   })
+  document.getElementById('playlist').innerHTML = template
   if (!template) {
     document.getElementById('playlist').innerHTML = `<p>Search for songs to add to your playlist!</p>`
   }
 }
+
+function _drawActiveSong() {
+  document.getElementById('songs').innerHTML = ProxyState.activeSong.Template
+}
+
 
 //Public
 export default class SongsController {
   constructor() {
     ProxyState.on('songs', _drawResults)
     ProxyState.on('playlist', _drawPlaylist)
+    ProxyState.on('activeSong', _drawActiveSong)
     _drawPlaylist()
   }
 
@@ -42,19 +51,25 @@ export default class SongsController {
     }
   }
 
-  // async getMySongs() {
-  //   try {
-  //     await songService.getMySongs()
-  //   } catch (error) {
-  //     console.error(error)
-  //   }
-  // }
+  async setActiveSong(id) {
+    try {
+      await songService.setActiveSong(id)
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   /**
    * Takes in a song id and sends it to the service in order to add it to the users playlist
    * @param {string} id
    */
-  addSong(id) { }
+  async addSong(id) {
+    try {
+      await songService.addSong(id)
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   /**
    * Takes in a song id to be removed from the users playlist and sends it to the server
@@ -62,3 +77,4 @@ export default class SongsController {
    */
   removeSong(id) { }
 }
+
