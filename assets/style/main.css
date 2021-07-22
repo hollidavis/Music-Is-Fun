@@ -10691,8 +10691,22 @@ body {
   background-color: #f2f2f2;
 }
 
+header {
+  height: 10vh;
+}
+
 main {
   flex-grow: 1;
+  height: 80vh;
+}
+
+footer {
+  height: 10vh;
+}
+
+.side-bar-scroll {
+  max-height: 65vh;
+  overflow-y: auto;
 }
 
 /*# sourceMappingURL=main.css.map */
